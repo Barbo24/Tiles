@@ -4,3 +4,5 @@
 A pygame rogue-like game.
 
 1/8/2019 Development started.
+
+15/8/2019 updated to version 0.11
