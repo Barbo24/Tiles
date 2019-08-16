@@ -1,5 +1,6 @@
 import pygame
 import lvl1lay
+import hp
 
 pygame.init()
 pygame.font.init()
@@ -9,9 +10,9 @@ green = (0, 255, 0)
 blue = (0, 0, 128) 
 black = (0, 0, 0)
 
-playerposx = 260
-playerposy = 256
-playervelx = 13
+playerposx = 64
+playerposy = 64
+playervelx = 16
 playervely = 16
 playerpos = (playerposx, playerposy)
 
@@ -19,128 +20,40 @@ dirUPx = playerposx
 dirUPy = playerposy-16
 dirDOWNx = playerposx
 dirDOWNy = playerposy+16
-dirRIGHTx = playerposx+13
+dirRIGHTx = playerposx+16
 dirRIGHTy = playerposy
-dirLEFTx = playerposx-13
+dirLEFTx = playerposx-16
 dirLEFTy = playerposy
 
 
-win = pygame.display.set_mode((650,550))
+win = pygame.display.set_mode((800,550))
 
 pygame.display.flip()
 pygame.display.set_caption('Tiles')
-font = pygame.font.Font("commodore.ttf", 16)
+font = pygame.font.Font("square.ttf", 16)
+fontcommodore = pygame.font.Font("commodore.ttf", 16)
+fontgreek = pygame.font.SysFont("timesnewroman", 18)
 player = font.render('@', True, white, black)
 wall = font.render('#', True, white, black)
-health = font.render('(//////////)', True, white, black)
-healthpercentage0 = font.render( "0HP" , True, white, black)
-healthpercentage1 = font.render( "1HP" , True, white, black)
-healthpercentage2 = font.render( "2HP" , True, white, black)
-healthpercentage3 = font.render( "3HP" , True, white, black)
-healthpercentage4 = font.render( "4HP" , True, white, black)
-healthpercentage5 = font.render( "5HP" , True, white, black)
-healthpercentage6 = font.render( "6HP" , True, white, black)
-healthpercentage7 = font.render( "7HP" , True, white, black)
-healthpercentage8 = font.render( "8HP" , True, white, black)
-healthpercentage9 = font.render( "9HP" , True, white, black)
-healthpercentage10 = font.render( "10HP" , True, white, black)
-healthpercentage11 = font.render( "11HP" , True, white, black)
-healthpercentage12 = font.render( "12HP" , True, white, black)
-healthpercentage13 = font.render( "13HP" , True, white, black)
-healthpercentage14 = font.render( "14HP" , True, white, black)
-healthpercentage15 = font.render( "15HP" , True, white, black)
-healthpercentage16 = font.render( "16HP" , True, white, black)
-healthpercentage17 = font.render( "17HP" , True, white, black)
-healthpercentage18 = font.render( "18HP" , True, white, black)
-healthpercentage19 = font.render( "19HP" , True, white, black)
-healthpercentage20 = font.render( "20HP" , True, white, black)
-healthpercentage21 = font.render( "21HP" , True, white, black)
-healthpercentage22 = font.render( "22HP" , True, white, black)
-healthpercentage23 = font.render( "23HP" , True, white, black)
-healthpercentage24 = font.render( "24HP" , True, white, black)
-healthpercentage25 = font.render( "25HP" , True, white, black)
-healthpercentage26 = font.render( "26HP" , True, white, black)
-healthpercentage27 = font.render( "27HP" , True, white, black)
-healthpercentage28 = font.render( "28HP" , True, white, black)
-healthpercentage29 = font.render( "29HP" , True, white, black)
-healthpercentage30 = font.render( "30HP" , True, white, black)
-healthpercentage31 = font.render( "31HP" , True, white, black)
-healthpercentage32 = font.render( "32HP" , True, white, black)
-healthpercentage33 = font.render( "33HP" , True, white, black)
-healthpercentage34 = font.render( "34HP" , True, white, black)
-healthpercentage35 = font.render( "35HP" , True, white, black)
-healthpercentage36 = font.render( "36HP" , True, white, black)
-healthpercentage37 = font.render( "37HP" , True, white, black)
-healthpercentage38 = font.render( "38HP" , True, white, black)
-healthpercentage39 = font.render( "39HP" , True, white, black)
-healthpercentage40 = font.render( "40HP" , True, white, black)
-healthpercentage41 = font.render( "41HP" , True, white, black)
-healthpercentage42 = font.render( "42HP" , True, white, black)
-healthpercentage43 = font.render( "43HP" , True, white, black)
-healthpercentage44 = font.render( "44HP" , True, white, black)
-healthpercentage45 = font.render( "45HP" , True, white, black)
-healthpercentage46 = font.render( "46HP" , True, white, black)
-healthpercentage47 = font.render( "47HP" , True, white, black)
-healthpercentage48 = font.render( "48HP" , True, white, black)
-healthpercentage49 = font.render( "49HP" , True, white, black)
-healthpercentage50 = font.render( "50HP" , True, white, black)
-healthpercentage51 = font.render( "51HP" , True, white, black)
-healthpercentage52 = font.render( "52HP" , True, white, black)
-healthpercentage53 = font.render( "53HP" , True, white, black)
-healthpercentage54 = font.render( "54HP" , True, white, black)
-healthpercentage55 = font.render( "55HP" , True, white, black)
-healthpercentage56 = font.render( "56HP" , True, white, black)
-healthpercentage57 = font.render( "57HP" , True, white, black)
-healthpercentage58 = font.render( "58HP" , True, white, black)
-healthpercentage59 = font.render( "59HP" , True, white, black)
-healthpercentage60 = font.render( "60HP" , True, white, black)
-healthpercentage61 = font.render( "61HP" , True, white, black)
-healthpercentage62 = font.render( "62HP" , True, white, black)
-healthpercentage63 = font.render( "63HP" , True, white, black)
-healthpercentage64 = font.render( "64HP" , True, white, black)
-healthpercentage65 = font.render( "65HP" , True, white, black)
-healthpercentage66 = font.render( "66HP" , True, white, black)
-healthpercentage67 = font.render( "67HP" , True, white, black)
-healthpercentage68 = font.render( "68HP" , True, white, black)
-healthpercentage69 = font.render( "69HP" , True, white, black)
-healthpercentage70 = font.render( "70HP" , True, white, black)
-healthpercentage71 = font.render( "71HP" , True, white, black)
-healthpercentage72 = font.render( "72HP" , True, white, black)
-healthpercentage73 = font.render( "73HP" , True, white, black)
-healthpercentage74 = font.render( "74HP" , True, white, black)
-healthpercentage75 = font.render( "75HP" , True, white, black)
-healthpercentage76 = font.render( "76HP" , True, white, black)
-healthpercentage77 = font.render( "77HP" , True, white, black)
-healthpercentage78 = font.render( "78HP" , True, white, black)
-healthpercentage79 = font.render( "79HP" , True, white, black)
-healthpercentage80 = font.render( "80HP" , True, white, black)
-healthpercentage81 = font.render( "81HP" , True, white, black)
-healthpercentage82 = font.render( "82HP" , True, white, black)
-healthpercentage83 = font.render( "83HP" , True, white, black)
-healthpercentage84 = font.render( "84HP" , True, white, black)
-healthpercentage85 = font.render( "85HP" , True, white, black)
-healthpercentage86 = font.render( "86HP" , True, white, black)
-healthpercentage87 = font.render( "87HP" , True, white, black)
-healthpercentage88 = font.render( "88HP" , True, white, black)
-healthpercentage89 = font.render( "89HP" , True, white, black)
-healthpercentage90 = font.render( "90HP" , True, white, black)
-healthpercentage91 = font.render( "91HP" , True, white, black)
-healthpercentage92 = font.render( "92HP" , True, white, black)
-healthpercentage93 = font.render( "93HP" , True, white, black)
-healthpercentage94 = font.render( "94HP" , True, white, black)
-healthpercentage95 = font.render( "95HP" , True, white, black)
-healthpercentage96 = font.render( "96HP" , True, white, black)
-healthpercentage97 = font.render( "97HP" , True, white, black)
-healthpercentage98 = font.render( "98HP" , True, white, black)
-healthpercentage99 = font.render( "99HP" , True, white, black)
-healthpercentage100 = font.render( "100HP" , True, white, black)
-WRectLEFT = pygame.Rect(0, 0, 13, 480)
-WRectRIGHT = pygame.Rect(637, 0, 13, 480)
-WRectTOP = pygame.Rect(0, 0, 650, 16)
-WRectBOT = pygame.Rect(0, 464, 650, 16)
-EntranceRect = pygame.Rect(0, 0, 0, 0)
-healthpos = (5, 485)
-healthpercentagepos = (165, 485)
+rat = font.render('R', True, white, black)
+entrance = fontgreek.render('Ω', True, white, black)
+healthfull = font.render('[//////////]', True, white, black)
+health9 = font.render('[///////// ]', True, white, black)
+health8 = font.render('[////////  ]', True, white, black)
+health7 = font.render('[///////   ]', True, white, black)
+health6 = font.render('[//////    ]', True, white, black)
+health5 = font.render('[/////     ]', True, white, black)
+health4 = font.render('[////      ]', True, white, black)
+health3 = font.render('[///       ]', True, white, black)
+health2 = font.render('[//        ]', True, white, black)
+health1 = font.render('[/         ]', True, white, black)
+health0 = font.render('[          ]', True, white, black)
+WRectLEFT = pygame.Rect(0, 0, 16, 480)
+WRectRIGHT = pygame.Rect(784, 0, 16, 480)
+WRectTOP = pygame.Rect(0, 0, 800, 16)
+WRectBOT = pygame.Rect(0, 464, 800, 16)
+healthpos = (5, 490)
+healthpercentagepos = (200, 488)
 pygame.display.flip()
 
 
@@ -152,10 +65,10 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-    dirUP = pygame.Rect(dirUPx, dirUPy, 13, 16)
-    dirDOWN = pygame.Rect(dirDOWNx, dirDOWNy, 13, 16)
-    dirRIGHT = pygame.Rect(dirRIGHTx, dirRIGHTy, 13, 16)
-    dirLEFT = pygame.Rect(dirLEFTx, dirLEFTy, 13, 16)
+    dirUP = pygame.Rect(dirUPx, dirUPy, 16, 16)
+    dirDOWN = pygame.Rect(dirDOWNx, dirDOWNy, 16, 16)
+    dirRIGHT = pygame.Rect(dirRIGHTx, dirRIGHTy, 16, 16)
+    dirLEFT = pygame.Rect(dirLEFTx, dirLEFTy, 16, 16)
 			
     keys = pygame.key.get_pressed()
 	
@@ -233,14 +146,246 @@ while run:
     pygame.draw.rect(win, black, dirLEFT)
 	
 	#HP
-    win.blit(health, healthpos)
-    win.blit(healthpercentage100, healthpercentagepos)
+    if hp.HPint == 0:
+        hp.HPstr = "0"
+    if hp.HPint == 1:
+        hp.HPstr = "1"
+    if hp.HPint == 2:
+        hp.HPstr = "2"
+    if hp.HPint == 3:
+        hp.HPstr = "3"
+    if hp.HPint == 4:
+        hp.HPstr = "4"
+    if hp.HPint == 5:
+        hp.HPstr = "5"
+    if hp.HPint == 6:
+        hp.HPstr = "6"
+    if hp.HPint == 7:
+        hp.HPstr = "7"
+    if hp.HPint == 8:
+        hp.HPstr = "8"
+    if hp.HPint == 9:
+        hp.HPstr = "9"
+    if hp.HPint == 10:
+        hp.HPstr = "10"
+    if hp.HPint == 11:
+        hp.HPstr = "11"
+    if hp.HPint == 12:
+        hp.HPstr = "12"
+    if hp.HPint == 13:
+        hp.HPstr = "13"
+    if hp.HPint == 14:
+        hp.HPstr = "14"
+    if hp.HPint == 15:
+        hp.HPstr = "15"
+    if hp.HPint == 16:
+        hp.HPstr = "16"
+    if hp.HPint == 17:
+        hp.HPstr = "17"
+    if hp.HPint == 18:
+        hp.HPstr = "18"
+    if hp.HPint == 19:
+        hp.HPstr = "19"
+    if hp.HPint == 20:
+        hp.HPstr = "20"
+    if hp.HPint == 21:
+        hp.HPstr = "21"
+    if hp.HPint == 22:
+        hp.HPstr = "22"
+    if hp.HPint == 23:
+        hp.HPstr = "23"
+    if hp.HPint == 24:
+        hp.HPstr = "24"
+    if hp.HPint == 25:
+        hp.HPstr = "25"
+    if hp.HPint == 26:
+        hp.HPstr = "26"
+    if hp.HPint == 27:
+        hp.HPstr = "27"
+    if hp.HPint == 28:
+        hp.HPstr = "28"
+    if hp.HPint == 29:
+        hp.HPstr = "29"
+    if hp.HPint == 30:
+        hp.HPstr = "30"
+    if hp.HPint == 31:
+        hp.HPstr = "31"
+    if hp.HPint == 32:
+        hp.HPstr = "32"
+    if hp.HPint == 33:
+        hp.HPstr = "33"
+    if hp.HPint == 34:
+        hp.HPstr = "34"
+    if hp.HPint == 35:
+        hp.HPstr = "35"
+    if hp.HPint == 36:
+        hp.HPstr = "36"
+    if hp.HPint == 37:
+        hp.HPstr = "37"
+    if hp.HPint == 38:
+        hp.HPstr = "38"
+    if hp.HPint == 39:
+        hp.HPstr = "39"
+    if hp.HPint == 40:
+        hp.HPstr = "40"
+    if hp.HPint == 41:
+        hp.HPstr = "41"
+    if hp.HPint == 42:
+        hp.HPstr = "42"
+    if hp.HPint == 43:
+        hp.HPstr = "43"
+    if hp.HPint == 44:
+        hp.HPstr = "44"
+    if hp.HPint == 45:
+        hp.HPstr = "45"
+    if hp.HPint == 46:
+        hp.HPstr = "46"
+    if hp.HPint == 47:
+        hp.HPstr = "47"
+    if hp.HPint == 48:
+        hp.HPstr = "48"
+    if hp.HPint == 49:
+        hp.HPstr = "49"
+    if hp.HPint == 50:
+        hp.HPstr = "50"
+    if hp.HPint == 51:
+        hp.HPstr = "51"
+    if hp.HPint == 52:
+        hp.HPstr = "52"
+    if hp.HPint == 53:
+        hp.HPstr = "53"
+    if hp.HPint == 54:
+        hp.HPstr = "54"
+    if hp.HPint == 55:
+        hp.HPstr = "55"
+    if hp.HPint == 56:
+        hp.HPstr = "56"
+    if hp.HPint == 57:
+        hp.HPstr = "57"
+    if hp.HPint == 58:
+        hp.HPstr = "58"
+    if hp.HPint == 59:
+        hp.HPstr = "59"
+    if hp.HPint == 60:
+        hp.HPstr = "60"
+    if hp.HPint == 61:
+        hp.HPstr = "61"
+    if hp.HPint == 62:
+        hp.HPstr = "62"
+    if hp.HPint == 63:
+        hp.HPstr = "63"
+    if hp.HPint == 64:
+        hp.HPstr = "64"
+    if hp.HPint == 65:
+        hp.HPstr = "65"
+    if hp.HPint == 66:
+        hp.HPstr = "66"
+    if hp.HPint == 67:
+        hp.HPstr = "67"
+    if hp.HPint == 68:
+        hp.HPstr = "68"
+    if hp.HPint == 69:
+        hp.HPstr = "69"
+    if hp.HPint == 70:
+        hp.HPstr = "70"
+    if hp.HPint == 71:
+        hp.HPstr = "71"
+    if hp.HPint == 72:
+        hp.HPstr = "72"
+    if hp.HPint == 73:
+        hp.HPstr = "73"
+    if hp.HPint == 74:
+        hp.HPstr = "74"
+    if hp.HPint == 75:
+        hp.HPstr = "75"
+    if hp.HPint == 76:
+        hp.HPstr = "76"
+    if hp.HPint == 77:
+        hp.HPstr = "77"
+    if hp.HPint == 78:
+        hp.HPstr = "78"
+    if hp.HPint == 79:
+        hp.HPstr = "79"
+    if hp.HPint == 80:
+        hp.HPstr = "80"
+    if hp.HPint == 81:
+        hp.HPstr = "81"
+    if hp.HPint == 82:
+        hp.HPstr = "82"
+    if hp.HPint == 83:
+        hp.HPstr = "83"
+    if hp.HPint == 84:
+        hp.HPstr = "84"
+    if hp.HPint == 85:
+        hp.HPstr = "85"
+    if hp.HPint == 86:
+        hp.HPstr = "86"
+    if hp.HPint == 87:
+        hp.HPstr = "87"
+    if hp.HPint == 88:
+        hp.HPstr = "88"
+    if hp.HPint == 89:
+        hp.HPstr = "89"
+    if hp.HPint == 90:
+        hp.HPstr = "90"
+    if hp.HPint == 91:
+        hp.HPstr = "91"
+    if hp.HPint == 92:
+        hp.HPstr = "92"
+    if hp.HPint == 93:
+        hp.HPstr = "93"
+    if hp.HPint == 94:
+        hp.HPstr = "94"
+    if hp.HPint == 95:
+        hp.HPstr = "95"
+    if hp.HPint == 96:
+        hp.HPstr = "96"
+    if hp.HPint == 97:
+        hp.HPstr = "97"
+    if hp.HPint == 98:
+        hp.HPstr = "98"
+    if hp.HPint == 99:
+        hp.HPstr = "99"
+    if hp.HPint == 100:
+        hp.HPstr = "100"
+
+    if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
+        hp.HPint -= 1
+        print(hp.HPint)
+
+    healthpercentage = fontcommodore.render(hp.HPstr + "HP", True, white, black)
+    win.blit(healthpercentage, healthpercentagepos)
+
+    if hp.HPint <= 100:
+        win.blit(healthfull, healthpos)	
+    if hp.HPint <= 90:
+        win.blit(health9, healthpos)
+    if hp.HPint <= 80:
+        win.blit(health8, healthpos)
+    if hp.HPint <= 70:
+        win.blit(health7, healthpos)
+    if hp.HPint <= 60:
+        win.blit(health6, healthpos)
+    if hp.HPint <= 50:
+        win.blit(health5, healthpos)
+    if hp.HPint <= 40:
+        win.blit(health4, healthpos)
+    if hp.HPint <= 30:
+        win.blit(health3, healthpos)
+    if hp.HPint <= 20:
+        win.blit(health2, healthpos)
+    if hp.HPint <= 10:
+        win.blit(health1, healthpos)
+    if hp.HPint <= 0:
+        win.blit(health0, healthpos)
 
     #LVL1
     pygame.draw.rect(win, green, WRectLEFT)
     pygame.draw.rect(win, green, WRectTOP)
     pygame.draw.rect(win, green, WRectRIGHT)
     pygame.draw.rect(win, green, WRectBOT)
+	
+    win.blit(entrance, lvl1lay.entrance1)
 	
     win.blit(wall, lvl1lay.wallLEFT0)
     win.blit(wall, lvl1lay.wallLEFT1)
