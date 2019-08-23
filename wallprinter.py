@@ -1,3 +1,5 @@
+from random import *
+
 text1 = "wallBOT"
 for x in range(50):
     print(text1 + str(x), "=", "(" + str(16*x) + ",", str(0) + ")")
@@ -22,3 +24,5 @@ for x in range(101):
     print("   ", "if hp.HPint ==", str(x) + ":") 
     print("       ", 'hp.HPstr = "' + str(x) + '"')
 else: print("###########################################################################################")
+x = randint(1, 100)
+print(x)

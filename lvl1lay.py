@@ -1,6 +1,5 @@
 #entrances
 entrance1 = (128, 124)
-
 #leftwall
 wallLEFT0 = (0, 0)
 wallLEFT1 = (0, 16)
@@ -32,7 +31,6 @@ wallLEFT26 = (0, 416)
 wallLEFT27 = (0, 432)
 wallLEFT28 = (0, 448)
 wallLEFT29 = (0, 464)
-
 #topwall
 wallBOT0 = (0, 0)
 wallBOT1 = (16, 0)
@@ -84,7 +82,6 @@ wallBOT46 = (736, 0)
 wallBOT47 = (752, 0)
 wallBOT48 = (768, 0)
 wallBOT49 = (784, 0)
-
 #rightwall
 wallRIGHT0 = (784, 0)
 wallRIGHT1 = (784, 16)
@@ -116,7 +113,6 @@ wallRIGHT26 = (784, 416)
 wallRIGHT27 = (784, 432)
 wallRIGHT28 = (784, 448)
 wallRIGHT29 = (784, 464)
-
 #bottomwall
 wallTOP0 = (0, 464)
 wallTOP1 = (16, 464)
