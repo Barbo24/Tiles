@@ -122,31 +122,25 @@ while run:
     ratRIGHT = pygame.Rect(enemypos.ratposx+16, enemypos.ratposy, 16, 16)
     ratLEFT = pygame.Rect(enemypos.ratposx-16, enemypos.ratposy, 16, 16)
 
-    pygame.draw.rect(win, white, ratUP)
-    pygame.draw.rect(win, white, ratDOWN)
-    pygame.draw.rect(win, white, ratLEFT)
-    pygame.draw.rect(win, white, ratRIGHT)
-
-
     if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
         if emovement == 1:
             if ratUP.colliderect(WRectTOP):
-                print("rat had hit the wall")
+                pass
             else:
                 enemypos.ratposy -= ratvel
         if emovement == 2:
             if ratDOWN.colliderect(WRectBOT):
-                print("rat had hit the wall")
+                pass
             else:
                 enemypos.ratposy += ratvel
         if emovement == 3:
             if ratLEFT.colliderect(WRectLEFT):
-                print("rat had hit the wall")
+                pass
             else: 
                 enemypos.ratposx -= ratvel
         if emovement == 4:
             if ratRIGHT.colliderect(WRectRIGHT):
-                print("rat had hit the wall")
+                pass
             else:
                 enemypos.ratposx += ratvel
         enemypos.ratpos = (enemypos.ratposx, enemypos.ratposy)
