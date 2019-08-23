@@ -8,3 +8,5 @@ A pygame rogue-like game.
 15/8/2019 updated to version 0.11
 
 16/8/2019 updated to version 0.12 "HP update"
+
+23/8/2019 updated to version 0.2.1 "Enemy update"
