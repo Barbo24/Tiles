@@ -140,25 +140,6 @@ while run:
     #pygame.draw.rect(win, white, ratseeRectDOWN)
     #pygame.draw.rect(win, white, ratseeRectLEFT)
     #pygame.draw.rect(win, white, ratseeRectRIGHT)
-	
-    if ratseeRectUP.colliderect(pRect) or ratseeRectDOWN.colliderect(pRect) or ratseeRectLEFT.colliderect(pRect) or ratseeRectRIGHT.colliderect(pRect):
-        if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
-            for x in range(10):
-                print(x)
-                if ratseeRectUP.colliderect(pRect):
-                    if dirnum == 1:
-                        ratmovement = 1
-                if ratseeRectDOWN.colliderect(pRect):
-                    if dirnum == 2:
-                        ratmovement = 2
-                if ratseeRectLEFT.colliderect(pRect):
-                    if dirnum == 3:
-                        ratmovement = 3
-                if ratseeRectRIGHT.colliderect(pRect):
-                    if dirnum == 4:
-                        ratmovement = 4
-                if x == 9:
-                    ratmovement = ratmovement
 
     ratUP = pygame.Rect(enemypos.ratposx, enemypos.ratposy-16, 16, 16)
     ratDOWN = pygame.Rect(enemypos.ratposx, enemypos.ratposy+16, 16, 16)
@@ -195,7 +176,7 @@ while run:
     if playerposx == enemypos.ratposx - 16:
         if playerposy == enemypos.ratposy + 16:
             if keys[pygame.K_d]:
-                ratmovement = choice([1,2,4])
+                ratmovement = choice([1,3,4])
     if playerposx == enemypos.ratposx - 16:
         if playerposy == enemypos.ratposy + 16:
             if keys[pygame.K_w]:
@@ -208,6 +189,9 @@ while run:
         if playerposy == enemypos.ratposy + 16:
             if keys[pygame.K_w]:
                 ratmovement = randint(1,3)
+             
+    #randRect = pygame.Rect(playerposx-16, playerposy+16, 16, 16)    
+    #pygame.draw.rect(win, white, randRect)
 
     if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
         if ratmovement == 1:
