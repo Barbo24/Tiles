@@ -1,4 +1,4 @@
-ratposx = 16
+ratposx = 224
 ratposy = 368
 ratpos = (ratposx, ratposy)
 
