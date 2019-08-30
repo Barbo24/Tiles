@@ -136,10 +136,12 @@ while run:
     ratseeRectLEFT = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy - 48, 48, 112) #RAT SEE RANGE
     ratseeRectRIGHT = pygame.Rect(enemypos.ratposx + 16, enemypos.ratposy - 48, 48, 112) #RAT SEE RANGE
 	
-    #pygame.draw.rect(win, white, ratseeRectUP)
-    #pygame.draw.rect(win, white, ratseeRectDOWN)
-    #pygame.draw.rect(win, white, ratseeRectLEFT)
-    #pygame.draw.rect(win, white, ratseeRectRIGHT)
+    pygame.draw.rect(win, white, ratseeRectUP)
+    pygame.draw.rect(win, white, ratseeRectDOWN)
+    pygame.draw.rect(win, white, ratseeRectLEFT)
+    pygame.draw.rect(win, white, ratseeRectRIGHT)
+    
+    
 
     ratUP = pygame.Rect(enemypos.ratposx, enemypos.ratposy-16, 16, 16)
     ratDOWN = pygame.Rect(enemypos.ratposx, enemypos.ratposy+16, 16, 16)
@@ -213,13 +215,15 @@ while run:
             if ratRIGHT.colliderect(WRectRIGHT) or ratRIGHT.colliderect(pRect):
                 pass
             else:
-                enemypos.ratposx += ratvel
+               enemypos.ratposx += ratvel
         if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratLEFT.colliderect(pRect) or ratRIGHT.colliderect(pRect):
             hp.HPint -= ratdmg
                 
 
     enemypos.ratpos = (enemypos.ratposx, enemypos.ratposy)
 	
+    
+    #PLAYER MOVEMENT
     if dirLEFT.colliderect(WRectLEFT) or dirLEFT.colliderect(ratRect):
         if keys[pygame.K_a]:
             playerposx = playerposx

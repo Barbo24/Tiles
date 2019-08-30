@@ -1,5 +1,5 @@
 #entrances
-entrance1 = (128, 124)
+entrance1 = (128, 127)
 #leftwall
 wallLEFT0 = (0, 0)
 wallLEFT1 = (0, 16)
