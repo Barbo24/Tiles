@@ -1,3 +1,8 @@
+dagger_on_ground = True
+dagger_picked = False
+
+#loot
+dagger = (80, 143)
 #entrances
 entrance1 = (128, 127)
 #leftwall

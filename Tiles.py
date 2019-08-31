@@ -3,6 +3,7 @@ import lvl1lay
 import hp
 from random import *
 import enemypos
+import weapons
 
 pygame.init()
 pygame.font.init()
@@ -38,6 +39,7 @@ fontgreek = pygame.font.SysFont("timesnewroman", 18)
 player = fontcommodore.render('@', True, white, black)
 wall = font.render('#', True, white, black)
 entrance = fontgreek.render('Ω', True, white, black)
+loot = fontgreek.render('*', True, white, black)
 healthfull = font.render('[//////////]', True, white, black)
 health9 = font.render('[///////// ]', True, white, black)
 health8 = font.render('[////////  ]', True, white, black)
@@ -52,6 +54,10 @@ health0 = font.render('[          ]', True, white, black)
 healthpos = (5, 490)
 healthpercentagepos = (200, 488)
 lvl1 = False
+
+#RAT
+ratHP = 7
+
 pygame.display.flip()
 
 run = True
@@ -124,41 +130,55 @@ while run:
 
     #RAT
     ratmovement = randint(1, 4) #1UP, 2DOWN, 3LEFT, 4RIGHT
-    rat = fontcommodore.render('R', True, white, black)
     ratvel = 16
     ratdmg = randint(1, 3)
-    rathitchance = (1, 2)
-    rathitchancetoplayer = randint(1, 2)
-    ratHP = 7
+    rathitchance = randint(1, 2)
+    rat = fontcommodore.render('R', True, white, black)
     ratRect = pygame.Rect(enemypos.ratposx, enemypos.ratposy, 16, 16)
     ratseeRectUP = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy - 48, 112, 48) #RAT SEE RANGE
     ratseeRectDOWN = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy + 16, 112, 48) #RAT SEE RANGE
     ratseeRectLEFT = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy - 48, 48, 112) #RAT SEE RANGE
     ratseeRectRIGHT = pygame.Rect(enemypos.ratposx + 16, enemypos.ratposy - 48, 48, 112) #RAT SEE RANGE
-	
-    pygame.draw.rect(win, white, ratseeRectUP)
-    pygame.draw.rect(win, white, ratseeRectDOWN)
-    pygame.draw.rect(win, white, ratseeRectLEFT)
-    pygame.draw.rect(win, white, ratseeRectRIGHT)
-    
-    
+   
 
-    ratUP = pygame.Rect(enemypos.ratposx, enemypos.ratposy-16, 16, 16)
-    ratDOWN = pygame.Rect(enemypos.ratposx, enemypos.ratposy+16, 16, 16)
-    ratRIGHT = pygame.Rect(enemypos.ratposx+16, enemypos.ratposy, 16, 16)
-    ratLEFT = pygame.Rect(enemypos.ratposx-16, enemypos.ratposy, 16, 16)
+    #pygame.draw.rect(win, white, ratseeRectUP)
+    #pygame.draw.rect(win, white, ratseeRectDOWN)
+    #pygame.draw.rect(win, white, ratseeRectLEFT)
+    #pygame.draw.rect(win, white, ratseeRectRIGHT)
+
+    ratUP = pygame.Rect(enemypos.ratposx, enemypos.ratposy - 16, 16, 16)
+    ratDOWN = pygame.Rect(enemypos.ratposx, enemypos.ratposy + 16, 16, 16)
+    ratRIGHT = pygame.Rect(enemypos.ratposx + 16, enemypos.ratposy, 16, 16)
+    ratLEFT = pygame.Rect(enemypos.ratposx - 16, enemypos.ratposy, 16, 16)
 
     if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratRIGHT.colliderect(pRect) or ratLEFT.colliderect(pRect):
         ratmovement = 5
+        
+    if ratseeRectUP.colliderect(pRect):
+        ratmovement = 1   
+    if ratseeRectDOWN.colliderect(pRect):
+        ratmovement = 2
+    if ratseeRectLEFT.colliderect(pRect):
+        ratmovement = 3
+    if ratseeRectRIGHT.colliderect(pRect):
+        ratmovement = 4
 		
     if playerposy == enemypos.ratposy - 32:
         ratmovement = randint(2, 4)
+        if keys[pygame.K_w]:
+            ratmovement = 1
     if playerposy == enemypos.ratposy + 32:
         ratmovement = choice([1,3,4])
+        if keys[pygame.K_s]:
+            ratmovement = 2
     if playerposx == enemypos.ratposx - 32:
         ratmovement = choice([1,2,4])
+        if keys[pygame.K_a]:
+            ratmovement = 3
     if playerposx == enemypos.ratposx + 32:
         ratmovement = randint(1,3)
+        if keys[pygame.K_d]:
+            ratmovement = 4
     if playerposx == enemypos.ratposx - 16:
         if playerposy == enemypos.ratposy - 16:
             if keys[pygame.K_s]:
@@ -216,9 +236,12 @@ while run:
                 pass
             else:
                enemypos.ratposx += ratvel
+        if rathitchance == 1:
+            if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratLEFT.colliderect(pRect) or ratRIGHT.colliderect(pRect):
+                hp.HPint -= ratdmg
         if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratLEFT.colliderect(pRect) or ratRIGHT.colliderect(pRect):
-            hp.HPint -= ratdmg
-                
+            if rathitchance == 2:
+                print("rat missed")
 
     enemypos.ratpos = (enemypos.ratposx, enemypos.ratposy)
 	
@@ -291,17 +314,46 @@ while run:
             dirLEFTy += playervely
             dirRIGHTy += playervely
             print("DOWN")
-			
-    win.blit(player, playerpos)
-    playerpos = (playerposx, playerposy)
 
+    playerpos = (playerposx, playerposy)
+    
+    if lvl1lay.dagger_on_ground == True:
+        if playerpos == (80, 144):
+            lvl1lay.dagger_on_ground = False
+            print("you picked a dagger")
+            lvl1lay.dagger_picked = True
+     
+    if keys[pygame.K_w]:    
+        if dirUP.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+    if keys[pygame.K_s]:    
+        if dirDOWN.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+    if keys[pygame.K_a]:    
+        if dirLEFT.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+    if keys[pygame.K_d]:    
+        if dirRIGHT.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+                
+    if ratHP <= 0:
+        enemypos.ratposx = 9999
+        enemypos.ratposy = 9999
+                
     lvl1 = True
     #LVL1
     if lvl1:
+        if lvl1lay.dagger_on_ground:
+            win.blit(loot, lvl1lay.dagger)
         
         win.blit(entrance, lvl1lay.entrance1)
         
-        win.blit(rat, enemypos.ratpos)
+        if ratHP >= 0:
+            win.blit(rat, enemypos.ratpos)
 		
         win.blit(wall, lvl1lay.wallLEFT0)
         win.blit(wall, lvl1lay.wallLEFT1)
@@ -465,5 +517,6 @@ while run:
         win.blit(wall, lvl1lay.wallBOT49)	
     #END OF LVL1
 
+    win.blit(player, playerpos)
     pygame.display.update()	
 pygame.quit()
