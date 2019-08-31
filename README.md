@@ -16,7 +16,11 @@ A pygame rogue-like game.
 
 
 R-rat
+
 @-player
+
 #-wall
+
 Ω-entrance(reffered as "gate" in the code")
+
 *-loot(includes weapons for now, planning to add a curency)
