@@ -1,5 +1,10 @@
+dagger_on_ground = True
+dagger_picked = False
+
+#loot
+dagger = (80, 143)
 #entrances
-entrance1 = (128, 124)
+entrance1 = (128, 127)
 #leftwall
 wallLEFT0 = (0, 0)
 wallLEFT1 = (0, 16)

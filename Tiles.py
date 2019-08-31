@@ -3,6 +3,7 @@ import lvl1lay
 import hp
 from random import *
 import enemypos
+import weapons
 
 pygame.init()
 pygame.font.init()
@@ -38,6 +39,7 @@ fontgreek = pygame.font.SysFont("timesnewroman", 18)
 player = fontcommodore.render('@', True, white, black)
 wall = font.render('#', True, white, black)
 entrance = fontgreek.render('Ω', True, white, black)
+loot = fontgreek.render('*', True, white, black)
 healthfull = font.render('[//////////]', True, white, black)
 health9 = font.render('[///////// ]', True, white, black)
 health8 = font.render('[////////  ]', True, white, black)
@@ -52,6 +54,10 @@ health0 = font.render('[          ]', True, white, black)
 healthpos = (5, 490)
 healthpercentagepos = (200, 488)
 lvl1 = False
+
+#RAT
+ratHP = 7
+
 pygame.display.flip()
 
 run = True
@@ -61,6 +67,8 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+			
+    keys = pygame.key.get_pressed()
 
     #DIRECTION BLOCKS
     dirUP = pygame.Rect(dirUPx, dirUPy, 16, 16)
@@ -68,11 +76,25 @@ while run:
     dirRIGHT = pygame.Rect(dirRIGHTx, dirRIGHTy, 16, 16)
     dirLEFT = pygame.Rect(dirLEFTx, dirLEFTy, 16, 16)
 	
+	#DIRECTION NUMBERS    1UP, 2DOWN, 3LEFT, 4RIGHT
+    dirnum = 1
+    if keys[pygame.K_w]:
+        dirnum = 1
+    if keys[pygame.K_s]:
+        dirnum = 2
+    if keys[pygame.K_a]:
+        dirnum = 3
+    if keys[pygame.K_d]:
+        dirnum = 4
+	
 	#WALLS IN EVERY LEVEL
     WRectLEFT = pygame.Rect(0, 0, 16, 480)
     WRectRIGHT = pygame.Rect(784, 0, 16, 480)
     WRectTOP = pygame.Rect(0, 0, 800, 16)
     WRectBOT = pygame.Rect(0, 464, 800, 16)
+	
+	#HITBOX
+    pRect = pygame.Rect(playerposx, playerposy, 16, 16)
 	
     keys = pygame.key.get_pressed()
 	
@@ -105,54 +127,233 @@ while run:
         win.blit(health0, healthpos)
 		
     #ENEMIES
-    if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
-        emovement = randint(1, 4) #1UP, 2DOWN, 3LEFT, 4RIGHT
-        print(emovement)
+
     #RAT
-    rat = fontcommodore.render('R', True, white, black)
+    ratmovement = randint(1, 4) #1UP, 2DOWN, 3LEFT, 4RIGHT
     ratvel = 16
     ratdmg = randint(1, 3)
-    rathitchance = (1, 2)
-    rathitchancetoplayer = randint(1, 2)
-    ratHP = 7
-	
+    rathitchance = randint(1, 2)
+    rat = fontcommodore.render('R', True, white, black)
+    ratRect = pygame.Rect(enemypos.ratposx, enemypos.ratposy, 16, 16)
+    ratseeRectUP = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy - 48, 112, 48) #RAT SEE RANGE
+    ratseeRectDOWN = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy + 16, 112, 48) #RAT SEE RANGE
+    ratseeRectLEFT = pygame.Rect(enemypos.ratposx - 48, enemypos.ratposy - 48, 48, 112) #RAT SEE RANGE
+    ratseeRectRIGHT = pygame.Rect(enemypos.ratposx + 16, enemypos.ratposy - 48, 48, 112) #RAT SEE RANGE
+   
 
-    ratUP = pygame.Rect(enemypos.ratposx, enemypos.ratposy-16, 16, 16)
-    ratDOWN = pygame.Rect(enemypos.ratposx, enemypos.ratposy+16, 16, 16)
-    ratRIGHT = pygame.Rect(enemypos.ratposx+16, enemypos.ratposy, 16, 16)
-    ratLEFT = pygame.Rect(enemypos.ratposx-16, enemypos.ratposy, 16, 16)
+    #pygame.draw.rect(win, white, ratseeRectUP)
+    #pygame.draw.rect(win, white, ratseeRectDOWN)
+    #pygame.draw.rect(win, white, ratseeRectLEFT)
+    #pygame.draw.rect(win, white, ratseeRectRIGHT)
+
+    ratUP = pygame.Rect(enemypos.ratposx, enemypos.ratposy - 16, 16, 16)
+    ratDOWN = pygame.Rect(enemypos.ratposx, enemypos.ratposy + 16, 16, 16)
+    ratRIGHT = pygame.Rect(enemypos.ratposx + 16, enemypos.ratposy, 16, 16)
+    ratLEFT = pygame.Rect(enemypos.ratposx - 16, enemypos.ratposy, 16, 16)
+
+    if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratRIGHT.colliderect(pRect) or ratLEFT.colliderect(pRect):
+        ratmovement = 5
+        
+    if ratseeRectUP.colliderect(pRect):
+        ratmovement = 1   
+    if ratseeRectDOWN.colliderect(pRect):
+        ratmovement = 2
+    if ratseeRectLEFT.colliderect(pRect):
+        ratmovement = 3
+    if ratseeRectRIGHT.colliderect(pRect):
+        ratmovement = 4
+		
+    if playerposy == enemypos.ratposy - 32:
+        ratmovement = randint(2, 4)
+        if keys[pygame.K_w]:
+            ratmovement = 1
+    if playerposy == enemypos.ratposy + 32:
+        ratmovement = choice([1,3,4])
+        if keys[pygame.K_s]:
+            ratmovement = 2
+    if playerposx == enemypos.ratposx - 32:
+        ratmovement = choice([1,2,4])
+        if keys[pygame.K_a]:
+            ratmovement = 3
+    if playerposx == enemypos.ratposx + 32:
+        ratmovement = randint(1,3)
+        if keys[pygame.K_d]:
+            ratmovement = 4
+    if playerposx == enemypos.ratposx - 16:
+        if playerposy == enemypos.ratposy - 16:
+            if keys[pygame.K_s]:
+                ratmovement = choice([1,2,4])
+    if playerposx == enemypos.ratposx - 16:
+        if playerposy == enemypos.ratposy - 16:
+            if keys[pygame.K_d]:
+                ratmovement = randint(2,4)
+    if playerposx == enemypos.ratposx + 16:
+        if playerposy == enemypos.ratposy - 16:
+            if keys[pygame.K_a]:
+                ratmovement = randint(2, 4)
+    if playerposx == enemypos.ratposx + 16:
+        if playerposy == enemypos.ratposy - 16:
+            if keys[pygame.K_s]:
+                ratmovement = randint(1,3)
+    if playerposx == enemypos.ratposx - 16:
+        if playerposy == enemypos.ratposy + 16:
+            if keys[pygame.K_d]:
+                ratmovement = choice([1,3,4])
+    if playerposx == enemypos.ratposx - 16:
+        if playerposy == enemypos.ratposy + 16:
+            if keys[pygame.K_w]:
+                ratmovement = choice([1,2,4])
+    if playerposx == enemypos.ratposx + 16:
+        if playerposy == enemypos.ratposy + 16:
+            if keys[pygame.K_a]:
+                ratmovement = choice([1,3,4])
+    if playerposx == enemypos.ratposx + 16:
+        if playerposy == enemypos.ratposy + 16:
+            if keys[pygame.K_w]:
+                ratmovement = randint(1,3)
+             
+    #randRect = pygame.Rect(playerposx-16, playerposy+16, 16, 16)    
+    #pygame.draw.rect(win, white, randRect)
 
     if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
-        if emovement == 1:
-            if ratUP.colliderect(WRectTOP):
+        if ratmovement == 1:
+            if ratUP.colliderect(WRectTOP) or ratUP.colliderect(pRect):
                 pass
             else:
                 enemypos.ratposy -= ratvel
-        if emovement == 2:
-            if ratDOWN.colliderect(WRectBOT):
+        if ratmovement == 2:
+            if ratDOWN.colliderect(WRectBOT) or ratDOWN.colliderect(pRect):
                 pass
             else:
                 enemypos.ratposy += ratvel
-        if emovement == 3:
-            if ratLEFT.colliderect(WRectLEFT):
+        if ratmovement == 3:
+            if ratLEFT.colliderect(WRectLEFT) or ratLEFT.colliderect(pRect):
                 pass
             else: 
                 enemypos.ratposx -= ratvel
-        if emovement == 4:
-            if ratRIGHT.colliderect(WRectRIGHT):
+        if ratmovement == 4:
+            if ratRIGHT.colliderect(WRectRIGHT) or ratRIGHT.colliderect(pRect):
                 pass
             else:
-                enemypos.ratposx += ratvel
-        enemypos.ratpos = (enemypos.ratposx, enemypos.ratposy)
+               enemypos.ratposx += ratvel
+        if rathitchance == 1:
+            if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratLEFT.colliderect(pRect) or ratRIGHT.colliderect(pRect):
+                hp.HPint -= ratdmg
+        if ratUP.colliderect(pRect) or ratDOWN.colliderect(pRect) or ratLEFT.colliderect(pRect) or ratRIGHT.colliderect(pRect):
+            if rathitchance == 2:
+                print("rat missed")
 
+    enemypos.ratpos = (enemypos.ratposx, enemypos.ratposy)
+	
+    
+    #PLAYER MOVEMENT
+    if dirLEFT.colliderect(WRectLEFT) or dirLEFT.colliderect(ratRect):
+        if keys[pygame.K_a]:
+            playerposx = playerposx
+            dirRIGHTx = dirRIGHTx
+            dirLEFTx = dirLEFTx
+            dirUPx = dirUPx
+            dirDOWNx = dirDOWNx
+            print("you can't go there")
+			
+    elif keys[pygame.K_a]:
+        playerposx -= playervelx
+        dirLEFTx -= playervelx
+        dirRIGHTx -= playervelx
+        dirUPx -= playervelx
+        dirDOWNx -= playervelx
+        print("LEFT")
+		
+    if dirRIGHT.colliderect(WRectRIGHT) or dirRIGHT.colliderect(ratRect):
+        if keys[pygame.K_d]:
+            playerposx = playerposx
+            dirRIGHTx = dirRIGHTx
+            dirLEFTx = dirLEFTx
+            dirUPx = dirUPx
+            dirDOWNx = dirDOWNx
+            print("you can't go there")
+		 	
+    elif keys[pygame.K_d]:
+        playerposx += playervelx
+        dirRIGHTx += playervelx
+        dirLEFTx += playervelx
+        dirUPx += playervelx
+        dirDOWNx += playervelx
+        print("RIGHT")
+
+    if dirUP.colliderect(WRectTOP) or dirUP.colliderect(ratRect):
+        if keys[pygame.K_w]:
+            playerposy = playerposy
+            dirUPy = dirUPy
+            dirDOWNy = dirDOWNy
+            dirLEFTy = dirLEFTy
+            dirRIGHTy = dirRIGHTy
+            print("you can't go there")
+	
+    elif keys[pygame.K_w]:
+        playerposy -= playervely
+        dirUPy -= playervely
+        dirDOWNy -= playervely
+        dirLEFTy -= playervely
+        dirRIGHTy -= playervely
+        print("UP")
+
+    if dirDOWN.colliderect(WRectBOT) or dirDOWN.colliderect(ratRect):
+        if keys[pygame.K_s]:
+            playerposy = playerposy
+            dirDOWNy = dirDOWNy
+            dirUPy = dirUPy
+            dirLEFTy = dirLEFTy
+            dirRIGHTy = dirRIGHTy
+            print("you can't go there")
+			
+    elif keys[pygame.K_s]:
+            playerposy += playervely
+            dirDOWNy += playervely
+            dirUPy += playervely
+            dirLEFTy += playervely
+            dirRIGHTy += playervely
+            print("DOWN")
+
+    playerpos = (playerposx, playerposy)
+    
+    if lvl1lay.dagger_on_ground == True:
+        if playerpos == (80, 144):
+            lvl1lay.dagger_on_ground = False
+            print("you picked a dagger")
+            lvl1lay.dagger_picked = True
+     
+    if keys[pygame.K_w]:    
+        if dirUP.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+    if keys[pygame.K_s]:    
+        if dirDOWN.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+    if keys[pygame.K_a]:    
+        if dirLEFT.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+    if keys[pygame.K_d]:    
+        if dirRIGHT.colliderect(ratRect):
+            if lvl1lay.dagger_picked:
+                ratHP -= weapons.dagger
+                
+    if ratHP <= 0:
+        enemypos.ratposx = 9999
+        enemypos.ratposy = 9999
+                
     lvl1 = True
-
     #LVL1
     if lvl1:
+        if lvl1lay.dagger_on_ground:
+            win.blit(loot, lvl1lay.dagger)
         
         win.blit(entrance, lvl1lay.entrance1)
         
-        win.blit(rat, enemypos.ratpos)
+        if ratHP >= 0:
+            win.blit(rat, enemypos.ratpos)
 		
         win.blit(wall, lvl1lay.wallLEFT0)
         win.blit(wall, lvl1lay.wallLEFT1)
@@ -315,76 +516,7 @@ while run:
         win.blit(wall, lvl1lay.wallBOT48)
         win.blit(wall, lvl1lay.wallBOT49)	
     #END OF LVL1
-	
-    if dirLEFT.colliderect(WRectLEFT):
-        if keys[pygame.K_a]:
-            playerposx = playerposx
-            dirRIGHTx = dirRIGHTx
-            dirLEFTx = dirLEFTx
-            dirUPx = dirUPx
-            dirDOWNx = dirDOWNx
-            print("you can't go there")
-			
-    elif keys[pygame.K_a]:
-        playerposx -= playervelx
-        dirLEFTx -= playervelx
-        dirRIGHTx -= playervelx
-        dirUPx -= playervelx
-        dirDOWNx -= playervelx
-        print("LEFT")
-		
-    if dirRIGHT.colliderect(WRectRIGHT):
-        if keys[pygame.K_d]:
-            playerposx = playerposx
-            dirRIGHTx = dirRIGHTx
-            dirLEFTx = dirLEFTx
-            dirUPx = dirUPx
-            dirDOWNx = dirDOWNx
-            print("you can't go there")
-		 	
-    elif keys[pygame.K_d]:
-        playerposx += playervelx
-        dirRIGHTx += playervelx
-        dirLEFTx += playervelx
-        dirUPx += playervelx
-        dirDOWNx += playervelx
-        print("RIGHT")
 
-    if dirUP.colliderect(WRectTOP):
-        if keys[pygame.K_w]:
-            playerposy = playerposy
-            dirUPy = dirUPy
-            dirDOWNy = dirDOWNy
-            dirLEFTy = dirLEFTy
-            dirRIGHTy = dirRIGHTy
-            print("you can't go there")
-	
-    elif keys[pygame.K_w]:
-        playerposy -= playervely
-        dirUPy -= playervely
-        dirDOWNy -= playervely
-        dirLEFTy -= playervely
-        dirRIGHTy -= playervely
-        print("UP")
-
-    if dirDOWN.colliderect(WRectBOT):
-        if keys[pygame.K_s]:
-            playerposy = playerposy
-            dirDOWNy = dirDOWNy
-            dirUPy = dirUPy
-            dirLEFTy = dirLEFTy
-            dirRIGHTy = dirRIGHTy
-            print("you can't go there")
-    elif keys[pygame.K_s]:
-            playerposy += playervely
-            dirDOWNy += playervely
-            dirUPy += playervely
-            dirLEFTy += playervely
-            dirRIGHTy += playervely
-            print("DOWN")
-	
     win.blit(player, playerpos)
-    playerpos = (playerposx, playerposy)
-
     pygame.display.update()	
 pygame.quit()
