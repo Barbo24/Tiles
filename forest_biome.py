@@ -1,5 +1,7 @@
-import seed
 import numpy
+import seed 
+import json
+import os.path
 
 treespawnchance = 0.2
 
@@ -7,6 +9,7 @@ def generateTrees():
     tilex = 0
     tiley = 0
     treepos = []
+    numpy.random.seed(seed.seed())
     for tiles in range(0,1500):
         tilevalue = numpy.random.random()
         
