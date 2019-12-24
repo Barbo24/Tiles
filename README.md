@@ -6,3 +6,5 @@ update notes:
 1/8/2019 Development started.
 
 21/12/2019 Scrapped the original idea, "Tiles" is now a roguelike themed survival game.
+
+24/12/2019 Basic procedural generation and forest biome added.
