@@ -25,9 +25,12 @@ def seed():
         chunkx = json.loads(chunkx_data)
     with open("saves/chunky.json", "r") as chunk:
         chunky_data = chunk.read()
-        chunky = json.loads(chunky_data)       
+        chunky = json.loads(chunky_data)
+
+    if(chunkx < 0): chunkx = -2 * chunkx - 1
+    else: chunkx *= 2
+    if(chunky < 0): chunky = -2 * chunky - 1
+    else: chunky *= 2   
     userseed = 69
-    temp = '{}{}{}'.format(chunkx, chunky, userseed)
-    temp_hash = hash(temp)
-    seed = temp_hash & 0xFFFFFFFF
+    seed = (chunkx * userseed) + (chunky * userseed) + userseed
     return seed
