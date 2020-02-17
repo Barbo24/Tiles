@@ -10,3 +10,5 @@ update notes:
 24/12/2019 Basic procedural generation and forest biome added.
 
 27/12/2019 Desert biome added. Generation updated, chunks will now not change biomes upon seed algorithm update.
+
+17/2/2020 Plains biome added, includes decreased tree count and lakes. Cacti now deals damage.
