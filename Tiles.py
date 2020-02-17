@@ -3,6 +3,7 @@ import json
 import pygame
 import forest_biome
 import desert_biome
+import plains_biome
 import os
 import random
 import player_pos
@@ -59,7 +60,6 @@ health3 = square.render('[///       ]', True, white, gray)
 health2 = square.render('[//        ]', True, white, gray)
 health1 = square.render('[/         ]', True, white, gray)
 health0 = square.render('[          ]', True, white, gray)
-healthpercentage = commodore.render(str(HP) + "HP", True, white, gray)
 healthposx = borderthicknes + 5
 healthposy = winy - hudheight + borderthicknes + 10
 healthpos = (healthposx, healthposy)
@@ -83,7 +83,8 @@ else:
 
 generation = True
 findplayerspawn = True
-biomecount = 2
+biomecount = 3
+tickHit = 0
 
 run = True
 while run:
@@ -93,6 +94,12 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     keys = pygame.key.get_pressed()
+    
+    #TICK
+    tick = pygame.time.get_ticks()
+    
+    #INTERACTION REACH RANGE
+    reach = pygame.Rect(playerposx - 48, playerposy - 48, 64 + 48, 64 + 48)
 
     #TILES
     player = monofont.render('@', True, white, background)
@@ -156,17 +163,21 @@ while run:
         biome = numpy.random.randint(1, 100)
         forest = False
         desert = False
+        plains = False
         forestchance = 100 / biomecount * 1
         desertchance = 100 / biomecount * 2
+        plainschance = 100 / biomecount * 3
         for chance in range(0,100):
             if(biome <= forestchance): forest = True; break
             if(biome <= desertchance): desert = True; break
+            if(biome <= plainschance): plains = True; break
         if(os.path.isfile("saves/chunk" + str(chunks) + "/biome_type.json")):
             save = open("saves/chunk" + str(chunks) + "/biome_type.json")
             biome_type = json.loads(save.read())
         else:
             if(forest): biome_type = "forest"
             if(desert): biome_type = "desert"
+            if(plains): biome_type = "plains"
             save = open("saves/chunk" + str(chunks) + "/biome_type.json", "w")
             save.write(json.dumps(biome_type))
         forest = False
@@ -208,11 +219,62 @@ while run:
         for cactipos in cacti:
             cactihitbox = pygame.Rect((cactipos), (16, 16))
             win.blit(cactus, cactipos)
-            if(playerUP.colliderect(cactihitbox)): playervelUP = 0
-            if(playerDOWN.colliderect(cactihitbox)): playervelDOWN = 0
-            if(playerLEFT.colliderect(cactihitbox)): playervelLEFT = 0
-            if(playerRIGHT.colliderect(cactihitbox)): playervelRIGHT = 0   
-        
+            if(playerUP.colliderect(cactihitbox)): 
+                playervelUP = 0
+                if(tick - tickHit > 1000):
+                    HP -= 2
+                    tickHit = pygame.time.get_ticks()
+            if(playerDOWN.colliderect(cactihitbox)): 
+                playervelDOWN = 0
+                if(tick - tickHit > 1000):
+                    HP -= 2
+                    tickHit = pygame.time.get_ticks()
+            if(playerLEFT.colliderect(cactihitbox)): 
+                playervelLEFT = 0
+                if(tick - tickHit > 1000):
+                    HP -= 2
+                    tickHit = pygame.time.get_ticks()
+            if(playerRIGHT.colliderect(cactihitbox)): 
+                playervelRIGHT = 0
+                if(tick - tickHit > 1000):
+                    HP -= 2
+                    tickHit = pygame.time.get_ticks()
+    #PLAINS
+    if(plains):
+        background = green
+        #TREES
+        if os.path.isfile("saves/chunk" + str(chunks) + "/trees.json"):
+            save = open("saves/chunk" + str(chunks) + "/trees.json")
+            trees = json.loads(save.read())
+        else:
+            trees = plains_biome.generateTrees()
+            save = open("saves/chunk" + str(chunks) + "/trees.json", "w")
+            save.write(json.dumps(trees))
+            save.close()
+        for treepos in trees:
+            treehitbox = pygame.Rect((treepos), (16, 16))
+            win.blit(tree, treepos)
+            if(playerUP.colliderect(treehitbox)): playervelUP = 0
+            if(playerDOWN.colliderect(treehitbox)): playervelDOWN = 0
+            if(playerLEFT.colliderect(treehitbox)): playervelLEFT = 0
+            if(playerRIGHT.colliderect(treehitbox)): playervelRIGHT = 0
+        #LAKES
+        if os.path.isfile("saves/chunk" + str(chunks) + "/lakes.json"):
+            save = open("saves/chunk" + str(chunks) + "/lakes.json")
+            lakes = json.loads(save.read())
+        else:
+            lakes = plains_biome.generateLakes()
+            save = open("saves/chunk" + str(chunks) + "/lakes.json", "w")
+            save.write(json.dumps(lakes))
+            save.close()
+        for lakepos in lakes:
+            water = pygame.Rect((lakepos), (16, 16))
+            pygame.draw.rect(win, blue, water)
+            if(playerUP.colliderect(water)): playervelUP = 0.5
+            if(playerDOWN.colliderect(water)): playervelDOWN = 0.5
+            if(playerLEFT.colliderect(water)): playervelLEFT = 0.5
+            if(playerRIGHT.colliderect(water)): playervelRIGHT = 0.5
+
     #HUD
     hud = pygame.Rect(0, winy - hudheight, winx, winy)
     hudborderup = pygame.Rect(0, winy - hudheight, winx, borderthicknes)
@@ -228,6 +290,7 @@ while run:
     
 	#HP
     HP = HP
+    healthpercentage = commodore.render(str(HP) + "HP", True, white, gray)
     win.blit(healthpercentage, healthpercentagepos)
     if HP <= 100:
         win.blit(healthfull, healthpos)	
