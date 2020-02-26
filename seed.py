@@ -31,6 +31,6 @@ def seed():
     else: chunkx *= 2
     if(chunky < 0): chunky = -2 * chunky - 1
     else: chunky *= 2   
-    userseed = 69
+    userseed = 10010
     seed = (chunkx * userseed) + (chunky * userseed) + userseed
     return seed
