@@ -182,8 +182,10 @@ while run:
             save.write(json.dumps(biome_type))
         forest = False
         desert = False
+        plains = False
         if(biome_type == "forest"): forest = True
         if(biome_type == "desert"): desert = True
+        if(biome_type == "plains"): plains = True
         generation = False
     #FOREST
     if(forest):
